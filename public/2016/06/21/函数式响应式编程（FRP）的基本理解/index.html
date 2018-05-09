@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>函数式响应式编程（FRP）的基本理解 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="理念&amp;emsp;&amp;emsp;所有的程序都是为了完成某些任务。大多数程序员所受的训练都是命令式编程。这种模式依赖于他们希望自己的程序如何来完成这些任务：开发者编写很多的指令来修正程序的状态；如果开发者在正确的位置上编写了正确的指令，那么程序将会正确的完成任务。">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数式响应式编程（FRP）的基本理解">
+<meta property="og:url" content="http://yoursite.com/2016/06/21/函数式响应式编程（FRP）的基本理解/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="理念&amp;emsp;&amp;emsp;所有的程序都是为了完成某些任务。大多数程序员所受的训练都是命令式编程。这种模式依赖于他们希望自己的程序如何来完成这些任务：开发者编写很多的指令来修正程序的状态；如果开发者在正确的位置上编写了正确的指令，那么程序将会正确的完成任务。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-07T12:23:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="函数式响应式编程（FRP）的基本理解">
+<meta name="twitter:description" content="理念&amp;emsp;&amp;emsp;所有的程序都是为了完成某些任务。大多数程序员所受的训练都是命令式编程。这种模式依赖于他们希望自己的程序如何来完成这些任务：开发者编写很多的指令来修正程序的状态；如果开发者在正确的位置上编写了正确的指令，那么程序将会正确的完成任务。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-函数式响应式编程（FRP）的基本理解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/21/函数式响应式编程（FRP）的基本理解/" class="article-date">
+  <time datetime="2016-06-21T06:05:01.000Z" itemprop="datePublished">2016-06-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      函数式响应式编程（FRP）的基本理解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="理念"><a href="#理念" class="headerlink" title="理念"></a>理念</h2><p>&emsp;&emsp;所有的程序都是为了完成某些任务。大多数程序员所受的训练都是命令式编程。这种模式依赖于他们希望自己的程序如何来完成这些任务：开发者编写很多的指令来修正程序的状态；如果开发者在正确的位置上编写了正确的指令，那么程序将会正确的完成任务。<br><a id="more"></a><br>&emsp;&emsp;这听起来很平凡。。。<br>&emsp;&emsp;为什么编程时我们思考问题的方式停留在“怎么做”这个点上？因为计算机实际上是以一条命令来工作的，CPU的程序计算尽职尽责，按部就班：读取（指令）-&gt;执行-&gt;读取-&gt;执行。。。所以理所当然的，我们只要告诉他们“怎么做”就好了（即命令式编程）。。。多么的无聊<br>&emsp;&emsp;与此相反，声明式编程（Declarative Programming）将程序员们从纷繁复杂的对如何完成某些任务的细枝末节的流程中解放出来，将关注点集中在任务到底“是什么”而非实现任务的流程。声明式编程是命令式编程之外的几种编程范式的一个总称。<br>&emsp;&emsp;声明式编程（Declarative Programming）是一种编程范性，与命令式编程相对立。它描述目标的性质，让电脑明白目标，而非流程。而指令式编程则需要用算法来明确的指出每一步该怎么做。函数式响应式编程是声明式编程的子编程范式之一。  </p>
+<h2 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h2><p>&emsp;&emsp;在高效地进行函数式响应式编程之前，我们首先需要理解函数式编程。</p>
+<h3 id="1、高阶函数"><a href="#1、高阶函数" class="headerlink" title="1、高阶函数"></a>1、高阶函数</h3><p>&emsp;&emsp;函数式编程的一个关键概念是“高阶函数”。从维基百科的解释来看，一个高阶函数需要满足下面两个条件： 1、一个或者多个函数作为输入。  2、有且仅有一个函数输出。<br>&emsp;&emsp;在Objective-c中我们经常使用block作为函数。我们不需要跋山涉水地去寻找‘高阶函数’，实际上，Apple为我们提供的Foundation库中就有。考虑象下面这么简单的一个NSNumber 的数组：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSArray * array = @[ @(1), @(2), @(3) ];</span><br></pre></td></tr></table></figure>
+<p>我们想要枚举这个数组的内容，利用数组元素来做些事情。<br>“好吧”，你说， “我将写一个for循环～”<br>住手吧，伙计，停止写for循环,好好看看我之前说的，我们可以用一个NSArray的高阶函数来代替。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (NSNumber *number in array) NSLog(@&quot;%@&quot;,number);</span><br></pre></td></tr></table></figure>
+<p>这个等同于下面的高阶函数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[array enumerateObjectsUsingBlock:^(NSNumber *number, NSUInteger idx, BOOL *stop)</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,number);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h3 id="2、高阶映射"><a href="#2、高阶映射" class="headerlink" title="2、高阶映射"></a>2、高阶映射</h3><p>&emsp;&emsp;我们要学习的第一个高阶函数是’映射[map]’.映射是在函数的层次上把一个列表变成相同长度的另一个列表，原始列表中的每一个值，在新的列表中都有一个对应的值。如下所示是一个平方数的映射：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map(1,2,3) =&gt; (1,4,9)</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;当然，这只是一个伪代码，一个高阶函数会返回另外一个函数而不是一个列表。那么我们要如何利用RXCollections呢?<br>&emsp;&emsp;我们这么来用rx_mapWithBlock:方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSArray * mappedArray = [array rx_mapWithBlock:^id(id each)&#123;</span><br><span class="line">    return @(pow([each integerValue],2));</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;这将会达成上面伪代码所完成的任务，如果我们打印出array的日志，我们将会看到如下内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(</span><br><span class="line">    1，</span><br><span class="line">    4，</span><br><span class="line">    9</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;简直完美!请注意rx_mapWithBlock: 并不是一个真正的函数映射，因为他不是技术上的高阶函数(她没有返回一个函数)。后面提到的库(RAC)已经解决了这一点,在下一章我们将看到映射是如何在ReactiveCocoa的上下文中工作的。<br>&emsp;&emsp;注意rx_mapWithBlock:在没有对原数组元素进行任何修改的前提下返回了一个新的数组，这里Foundation的类真的是非常好用的一个例子，因为他们的类默认就是不可变的。<br>想象一下，往常(命令式编程)为了完成这个任务，我们不得不写下这样的代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSMutableArray *mutableArray = [NSMutableArray arryaWithCapacity:array.count];</span><br><span class="line">for (NSNumber *number in array) [mutableArray addObject:@(pow([number integerValue], 2))];</span><br><span class="line">NSArray *mappedArray = [NSArray arrayWithArray: mutableArray];</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;代码显然更多，而且还有一个无用的局部变量mutableArray污染了我们的作用域，简直是个毛线！<br>所以当你想把一个列表里的元素转化为另一个列表的元素时，你就能体会到映射的强大。</p>
+<h3 id="3、高阶过滤"><a href="#3、高阶过滤" class="headerlink" title="3、高阶过滤"></a>3、高阶过滤</h3><p>&emsp;&emsp;谈到ReactiveCocoa，我们要使用的另一种关键的高阶函数就是过滤器。一个列表通过过滤能够返回一个只包含了原列表中符合条件的元素的新列表，具体我们来看实践中的例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSArray *filteredArray = [array rx_filterWithBlock:^BOOL(id each)&#123;</span><br><span class="line">    return ([each integerValue] % 2 == 0);</span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;过滤后，现在filteredArray等于@[ @2 ].如果没有这样的抽象方法(即高阶过滤)，我们不得不像下面这样来完成工作:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSMutableArray *mutableArray = [NSMutableArray arrayWithCapacity: array.count];</span><br><span class="line">for ( NSNumber * number in array )&#123;</span><br><span class="line">    if ( [number integerValue] % 2 == 0 )&#123;</span><br><span class="line">        [mutableArray addObject:number];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">NSArray *filteredArray = [NSArray arrayWithArray:mutableArray];</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;有点明白了,对不对? 你可能像上面这样子写代码写了成百上千次。我们每一天的工作中涉及到类似这种高阶映射或者高阶过滤的事情有多少? 非常多！通过使用像高阶过滤、高阶映射类似的高阶函数，我们能够把这种繁琐又乏味的任务抽象出来，轻松工作，轻松生活。。。</p>
+<h3 id="4、高阶折叠"><a href="#4、高阶折叠" class="headerlink" title="4、高阶折叠"></a>4、高阶折叠</h3><p>&emsp;&emsp;Flod 是一个有趣的高阶函数－她把列表中的所有元素变成一个值。一个简单的高阶折叠能够用来给数值数组求和。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSNumber * sum = [array rx_foldWithBlock:^ id (id memo , id each)&#123;</span><br><span class="line">    return @([memo integerValue] + [each integerValue]);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;输出的值为@6.数组中的每一个元素按顺序执行上述合并规则:[memo integerValue] + [each integerValue],其中memo参数纪录的是上一次合并后的结果，其初始值为零。这还不是很有趣，有趣的是我们还能给memo(这个参数的泛称)赋初始值:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[[array rx_mapWithBlock:^id (id each)&#123;</span><br><span class="line">        return [each stringValue];</span><br><span class="line">    &#125;] rx_foldInitialValue:@&quot;&quot; block:^id (id memo , id each)&#123;</span><br><span class="line">        return [memo stringByAppendingString:each];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;代码的结果:@“123”. 我们来分析一下这是怎么做到的. 首先我们对数组中的所有NSNumber对象做了映射，把他们变成了NSString对象，然后我们实现了一个高阶折叠，并给了memo变量一个空字符串。<br>       在没有RXCollections的情况下能得到这样的结果吗？当然可以。但这是一个明确的”是什么，而不是如何”的解决问题的方法。这种方法可以让我们不必跟CPU一样去想”这一步要如何，下一步要如何”类似这样的事情。写代码的时候如此，读代码的时候更是如此(意:更多地关注任务是什么，要达成什么目标)</p>
+<h3 id="5、性能"><a href="#5、性能" class="headerlink" title="5、性能"></a>5、性能</h3><p>&emsp;&emsp;这一章有关函数式编程的事例代码可能会让你开始担心性能的问题。例如，在一个长数组中，给每个元素创建一个过渡的字符描述并把他们追加到前面的结果中去，比起命令式编程来说，可能需要消耗更长的时间。<br>&emsp;&emsp;这可能是个问题，但幸运的是，现在的计算机(甚至iPhone手机)性能已经足够强大，在大多数情况下，这种性能损耗是无关紧要的，况且当这种损耗变成一个性能瓶颈的时候，你随时都可以回头去优化她让她更加高效。CPU的时间很廉价，但是你的时间是很宝贵，因此牺牲CPU的时间会是更好的选择。</p>
+<h3 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h3><p>&emsp;&emsp;我们使用RXCollections后不需要额外的可变变量就可以在列表上进行操作，虽然RXCollections可能隐式地生成了这样的可变变量来完成任务，但是这不是我们要关心的，因为它已经为我们抽象出了这样的方式，通过:mapping、filtering和folding这种方式让我们不必在意实现任务的步骤。(当然，这并不是说，我们不应该熟悉RXCollections的源码，只是告诉你不必按部就班地去完成任务了)<br>在最后，我们也看到了，使用链式操作一次可以输出一个更为复杂的逻辑操作的结果。下一章我们将谈论更多的有关链式操作的内容———实际上，它是ReactiveCocoa中的重要语法之一。</p>
+<p>转载请注明原地址，Clang的博客：<a href="https://chenhu1001.github.io" target="_blank" rel="noopener">https://chenhu1001.github.io</a> 谢谢！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/21/函数式响应式编程（FRP）的基本理解/" data-id="cjgz3hh1l0015n5xf5da57m7m" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/06/21/iOS新的依赖管理工具：Carthage/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS新的依赖管理工具：Carthage
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/20/iOS播放动态gif图片/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">iOS播放动态gif图片</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/音视频/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/音视频/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/音视频/" style="font-size: 20px;">音视频</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/11/macOS下如何编译FFmpeg-for-macOS-APP/">macOS下如何编译FFmpeg for macOS APP</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-直播播放器（六）/">iOS直播技术分享-直播播放器（六）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-延迟优化（五）/">iOS直播技术分享-延迟优化（五）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-推流和传输（四）/">iOS直播技术分享-推流和传输（四）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/11/iOS直播技术分享-视频编码（三）/">iOS直播技术分享-视频编码（三）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

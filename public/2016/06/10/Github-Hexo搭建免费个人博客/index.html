@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Github+Hexo搭建免费个人博客 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="经过各种找资料，踩过各种坑，终于搭建好了hexo，域名目前用的是github的，我的hexo是3.2.2版本，hexo不同的版本，很多配置都不一样。好吧，废话不多说了，开始吧。">
+<meta name="keywords" content="随笔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github+Hexo搭建免费个人博客">
+<meta property="og:url" content="http://yoursite.com/2016/06/10/Github-Hexo搭建免费个人博客/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="经过各种找资料，踩过各种坑，终于搭建好了hexo，域名目前用的是github的，我的hexo是3.2.2版本，hexo不同的版本，很多配置都不一样。好吧，废话不多说了，开始吧。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-07T12:23:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Github+Hexo搭建免费个人博客">
+<meta name="twitter:description" content="经过各种找资料，踩过各种坑，终于搭建好了hexo，域名目前用的是github的，我的hexo是3.2.2版本，hexo不同的版本，很多配置都不一样。好吧，废话不多说了，开始吧。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Github-Hexo搭建免费个人博客" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/10/Github-Hexo搭建免费个人博客/" class="article-date">
+  <time datetime="2016-06-10T06:03:28.000Z" itemprop="datePublished">2016-06-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/随笔/">随笔</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Github+Hexo搭建免费个人博客
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>经过各种找资料，踩过各种坑，终于搭建好了hexo，域名目前用的是github的，我的hexo是3.2.2版本，hexo不同的版本，很多配置都不一样。好吧，废话不多说了，开始吧。<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>这篇教程是针对Mac的，之前是想着写博客，一方面是给自己做笔记，可以提升自己的写作、总结能力。一个技术点我们会使用，并不难，但是要做到让别人也能听懂，还是需要一定的技巧和经验的。很多类似于CSDN、博客园也都可以写文章，但是页面的样式我不是太喜欢，简书还算好点（我的文章在简书上也有同步）。最近看到一些大神们的博客，貌似都是用hexo写的，我也依葫芦画瓢的搭建了一个。不啰嗦了，直接上搭建步骤。</p>
+<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><h3 id="安装Node-js（必须）"><a href="#安装Node-js（必须）" class="headerlink" title="安装Node.js（必须）"></a>安装Node.js（必须）</h3><p>作用：用来生成静态页面。<br>到Node.js<a href="https://nodejs.org/en/" target="_blank" rel="noopener">官网</a>下载相应平台的最新版本，按照提示一路安装即可。</p>
+<h3 id="安装Git（必须）"><a href="#安装Git（必须）" class="headerlink" title="安装Git（必须）"></a>安装Git（必须）</h3><p>作用：把本地的hexo内容提交到github上去。<br>如果已经安装了Xcode就自带Git，我就不多说了。</p>
+<h3 id="申请GitHub（必须）"><a href="#申请GitHub（必须）" class="headerlink" title="申请GitHub（必须）"></a>申请GitHub（必须）</h3><p>作用：是用来做博客的远程仓库、域名、服务器之类的，怎么与本地hexo建立连接等下讲。<br><a href="https://github.com/" target="_blank" rel="noopener">Github</a>账号我也不再啰嗦了，没有的话直接申请就行了，跟一般的注册账号差不多，SSH Keys，看你自己了，可以不配置，不配置的话以后每次对自己的博客有改动提交的时候就要手动输入账号密码，假如配置了就不需要了，怎么配置我就不多说了，网上有很多教程。</p>
+<h2 id="开始安装Hexo"><a href="#开始安装Hexo" class="headerlink" title="开始安装Hexo"></a>开始安装Hexo</h2><h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>Node.js和Git都安装好后，可执行如下命令安装hexo：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm install -g hexo</span><br></pre></td></tr></table></figure>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>然后，执行init命令初始化hexo到你指定的目录，我是直接cd到目标，在目录里执行如下命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
+<p>好啦，至此，全部安装工作已经完成！</p>
+<h3 id="生成静态页面"><a href="#生成静态页面" class="headerlink" title="生成静态页面"></a>生成静态页面</h3><p>cd 到你的init目录，执行如下命令，生成静态页面至public目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate（hexo g也可以）</span><br></pre></td></tr></table></figure>
+<h3 id="本地启动"><a href="#本地启动" class="headerlink" title="本地启动"></a>本地启动</h3><p>启动本地服务，进行文章预览调试，命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>在浏览器中输入:<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a><br>我不知道你们能不能，反正我不能，因为我还没有把环境配置好<br>我把我报的一些错，和解决方式列出来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR Plugin load failed: hexo-server</span><br></pre></td></tr></table></figure>
+<p>原因：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Besides, utilities are separated into a standalone module. hexo.util is not reachable anymore.</span><br></pre></td></tr></table></figure>
+<p>解决方法，执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm install hexo-server --save</span><br></pre></td></tr></table></figure>
+<p>安装完成后，输入以下命令以启动服务器，您的网站会在 <a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 下启动。在服务器启动期间，Hexo 会监视文件变动并自动更新，您无须重启服务器。<br>这个时候再重新生成静态文件，命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate（或hexo g）</span><br></pre></td></tr></table></figure>
+<p>启动本地服务器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>如果您想要更改端口，或是在执行时遇到了 EADDRINUSE 错误，可以在执行时使用 -p 选项指定其他端口，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server -p 5000</span><br></pre></td></tr></table></figure>
+<h2 id="配置-Github"><a href="#配置-Github" class="headerlink" title="配置 Github"></a>配置 Github</h2><h3 id="建立Repository"><a href="#建立Repository" class="headerlink" title="建立Repository"></a>建立Repository</h3><p>建立与你用户名对应的仓库，仓库名必须为【your_user_name.github.io】，固定写法。然后建立关联，我的blog在本地/Users/chenhu/Documents/Hexo，这里面有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_config.yml    node_modules    public        source　　　　</span><br><span class="line">db.json        package.json    scaffolds    themes</span><br></pre></td></tr></table></figure>
+<p>现在我们需要修改_config.yml文件来建立关联，命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim _config.yml</span><br></pre></td></tr></table></figure>
+<p>翻到最下面，改成类似我这样子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: https://github.com/chenhu1001/chenhu1001.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<p>执行如下命令才能使用git部署</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<p>网上会有很多说法，有的type是github，还有repository最后面的后缀也不一样，是github.com.git，我也踩了很多坑，我现在的版本是hexo:3.2.2，执行命令hexo -version就出来了，貌似3.0以后全部改成我上面这种格式了。<br>然后，执行配置命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>然后再浏览器中输入<a href="https://chenhu1001.github.io" target="_blank" rel="noopener">https://chenhu1001.github.io</a>就行了，我的github账户叫chenhu1001，把这个改成你github的账户名就行了。</p>
+<h2 id="部署步骤"><a href="#部署步骤" class="headerlink" title="部署步骤"></a>部署步骤</h2><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><p>每次部署的步骤，可按以下三步来进行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean  </span><br><span class="line">hexo generate  </span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+<p>还可以将上面的3个命令封装成一个shell脚本（publish.sh），放在Hexo对应的目录下方便上传部署。</p>
+<h3 id="一些常用命令："><a href="#一些常用命令：" class="headerlink" title="一些常用命令："></a>一些常用命令：</h3><p>hexo new “postName”&emsp;&emsp;&emsp;//新建文章<br>hexo new page “pageName”&emsp;&emsp;&emsp;//新建页面<br>hexo generate&emsp;&emsp;&emsp;//生成静态页面至public目录<br>hexo server&emsp;&emsp;&emsp;//开启预览访问端口（默认端口4000，’ctrl + c’关闭server）<br>hexo deploy&emsp;&emsp;&emsp;//将Hexo部署到GitHub<br>hexo help&emsp;&emsp;&emsp;//查看帮助<br>hexo version&emsp;&emsp;&emsp;//查看Hexo的版本<br>&amp;emsp\;&amp;emsp\;&emsp;&emsp;&emsp;//段落前空两格(为了显示，没有转移符)<br>&lt;!--more-->&emsp;&emsp;&emsp;//用于文章的隔断，显示更多<br>[iOS,WebRTC,直播,FFMpeg]&emsp;&emsp;&emsp;//用于写文章时增加tag</p>
+<h3 id="一些基本路径"><a href="#一些基本路径" class="headerlink" title="一些基本路径"></a>一些基本路径</h3><p>文章在source/_posts下，支持Markdown语法，可以用Markdown编辑器进行编辑，如果想修改头像可以直接在主题的_config.yml文件里面修改，友情链接之类的都在这里，开始打理你的博客吧，有什么问题或者建议，都可以提出来，我会继续完善的。  </p>
+<h2 id="Markdown语法"><a href="#Markdown语法" class="headerlink" title="Markdown语法"></a>Markdown语法</h2><p><a href="https://www.zybuluo.com/mdeditor" target="_blank" rel="noopener">实用的Markdown语法例子</a></p>
+<p>Clang的技术博客：<a href="https://chenhu1001.github.io" target="_blank" rel="noopener">https://chenhu1001.github.io</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/10/Github-Hexo搭建免费个人博客/" data-id="cjgz3hh0z0004n5xfq0g4sa6o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/06/20/ARC下内存泄露总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ARC下内存泄露总结
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/音视频/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/音视频/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/音视频/" style="font-size: 20px;">音视频</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/11/macOS下如何编译FFmpeg-for-macOS-APP/">macOS下如何编译FFmpeg for macOS APP</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-直播播放器（六）/">iOS直播技术分享-直播播放器（六）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-延迟优化（五）/">iOS直播技术分享-延迟优化（五）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-推流和传输（四）/">iOS直播技术分享-推流和传输（四）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/11/iOS直播技术分享-视频编码（三）/">iOS直播技术分享-视频编码（三）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>iOS直播技术分享-音视频采集（一） | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1、iOS直播技术的流程&amp;emsp;&amp;emsp;直播技术的流程大致可以分为几个步骤：数据采集、图像处理（实时滤镜）、视频编码、封包、上传、云端（转码、录制、分发）、直播播放器。">
+<meta name="keywords" content="音视频">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS直播技术分享-音视频采集（一）">
+<meta property="og:url" content="http://yoursite.com/2016/07/02/iOS直播技术分享-音视频采集（一）/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1、iOS直播技术的流程&amp;emsp;&amp;emsp;直播技术的流程大致可以分为几个步骤：数据采集、图像处理（实时滤镜）、视频编码、封包、上传、云端（转码、录制、分发）、直播播放器。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2014909-fc4efbc9b1ffdd45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-05-07T12:23:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS直播技术分享-音视频采集（一）">
+<meta name="twitter:description" content="1、iOS直播技术的流程&amp;emsp;&amp;emsp;直播技术的流程大致可以分为几个步骤：数据采集、图像处理（实时滤镜）、视频编码、封包、上传、云端（转码、录制、分发）、直播播放器。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2014909-fc4efbc9b1ffdd45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS直播技术分享-音视频采集（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/02/iOS直播技术分享-音视频采集（一）/" class="article-date">
+  <time datetime="2016-07-02T06:06:16.000Z" itemprop="datePublished">2016-07-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/音视频/">音视频</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS直播技术分享-音视频采集（一）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1、iOS直播技术的流程"><a href="#1、iOS直播技术的流程" class="headerlink" title="1、iOS直播技术的流程"></a>1、iOS直播技术的流程</h2><p>&emsp;&emsp;直播技术的流程大致可以分为几个步骤：数据采集、图像处理（实时滤镜）、视频编码、封包、上传、云端（转码、录制、分发）、直播播放器。<br><a id="more"></a></p>
+<ul>
+<li>数据采集：通过摄像头和麦克风获得实时的音视频数据；  </li>
+<li>图像处理：将数据采集的输入流进行实时滤镜，得到我们美化之后的视频帧； </li>
+<li>视频编码：编码分为软编码和硬编码。现在一般的编码方式都是H.264，比较新的H.265据说压缩率比较高，但算法也相当要复杂一些，使用还不够广泛。软编码是利用CPU进行编码，硬编码就是使用GPU进行编码，软编码支持现在所有的系统版本，由于苹果在iOS8才开放硬编码的API，故硬编码只支持iOS8以上的系统；  </li>
+<li>封包：现在直播推流中，一般采用的格式是FLV；  </li>
+<li>上传：常用的协议是利用RTMP协议进行推流；  </li>
+<li>云端：进行流的转码、分发和录制；  </li>
+<li>直播播放器：负责拉流、解码、播放。</li>
+</ul>
+<p>用一张腾讯云的图来说明上面的流程：<br><img src="http://upload-images.jianshu.io/upload_images/2014909-fc4efbc9b1ffdd45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="直播技术流程"></p>
+<h2 id="2、获取系统的授权"><a href="#2、获取系统的授权" class="headerlink" title="2、获取系统的授权"></a>2、获取系统的授权</h2><p>直播的第一步就是采集数据，包含视频和音频数据，由于iOS权限的要求，需要先获取访问摄像头和麦克风的权限：</p>
+<p>请求获取访问摄像头权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">__weak typeof(self) _self = self;</span><br><span class="line">    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];</span><br><span class="line">    switch (status) &#123;</span><br><span class="line">        case AVAuthorizationStatusNotDetermined:&#123;</span><br><span class="line">            // 许可对话没有出现，发起授权许可</span><br><span class="line">            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) &#123;</span><br><span class="line">                if (granted) &#123;</span><br><span class="line">                    dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                        [_self.session setRunning:YES];</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;];</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        case AVAuthorizationStatusAuthorized:&#123;</span><br><span class="line">            // 已经开启授权，可继续</span><br><span class="line">            [_self.session setRunning:YES];</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        case AVAuthorizationStatusDenied:</span><br><span class="line">        case AVAuthorizationStatusRestricted:</span><br><span class="line">            // 用户明确地拒绝授权，或者相机设备无法访问</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>请求获取访问麦克风权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];</span><br><span class="line">    switch (status) &#123;</span><br><span class="line">        case AVAuthorizationStatusNotDetermined:&#123;</span><br><span class="line">            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted) &#123;</span><br><span class="line">            &#125;];</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        case AVAuthorizationStatusAuthorized:&#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        case AVAuthorizationStatusDenied:</span><br><span class="line">        case AVAuthorizationStatusRestricted:</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3、配置采样参数"><a href="#3、配置采样参数" class="headerlink" title="3、配置采样参数"></a>3、配置采样参数</h2><p> 音频：需要配置码率、采样率；<br> 视频：需要配置视频分辨率、视频的帧率、视频的码率。</p>
+<h2 id="4、音视频的录制"><a href="#4、音视频的录制" class="headerlink" title="4、音视频的录制"></a>4、音视频的录制</h2><p> 音频的录制</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">self.taskQueue = dispatch_queue_create(&quot;com.1905.live.audioCapture.Queue&quot;, NULL);</span><br><span class="line">       </span><br><span class="line">       AVAudioSession *session = [AVAudioSession sharedInstance];</span><br><span class="line">       [session setActive:YES withOptions:kAudioSessionSetActiveFlag_NotifyOthersOnDeactivation error:nil];</span><br><span class="line">       </span><br><span class="line">       [[NSNotificationCenter defaultCenter] addObserver: self</span><br><span class="line">                                                selector: @selector(handleRouteChange:)</span><br><span class="line">                                                    name: AVAudioSessionRouteChangeNotification</span><br><span class="line">                                                  object: session];</span><br><span class="line">       [[NSNotificationCenter defaultCenter] addObserver: self</span><br><span class="line">                                                selector: @selector(handleInterruption:)</span><br><span class="line">                                                    name: AVAudioSessionInterruptionNotification</span><br><span class="line">                                                  object: session];</span><br><span class="line">       </span><br><span class="line">       NSError *error = nil;</span><br><span class="line">       </span><br><span class="line">       [session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers error:nil];</span><br><span class="line">       </span><br><span class="line">       [session setMode:AVAudioSessionModeVideoRecording error:&amp;error];</span><br><span class="line">       </span><br><span class="line">       if (![session setActive:YES error:&amp;error]) &#123;</span><br><span class="line">           [self handleAudioComponentCreationFailure];</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       AudioComponentDescription acd;</span><br><span class="line">       acd.componentType = kAudioUnitType_Output;</span><br><span class="line">       acd.componentSubType = kAudioUnitSubType_RemoteIO;</span><br><span class="line">       acd.componentManufacturer = kAudioUnitManufacturer_Apple;</span><br><span class="line">       acd.componentFlags = 0;</span><br><span class="line">       acd.componentFlagsMask = 0;</span><br><span class="line">       </span><br><span class="line">       self.component = AudioComponentFindNext(NULL, &amp;acd);</span><br><span class="line">       </span><br><span class="line">       OSStatus status = noErr;</span><br><span class="line">       status = AudioComponentInstanceNew(self.component, &amp;_componetInstance);</span><br><span class="line">       </span><br><span class="line">       if (noErr != status) &#123;</span><br><span class="line">           [self handleAudioComponentCreationFailure];</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       UInt32 flagOne = 1;</span><br><span class="line">       </span><br><span class="line">       AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, 1, &amp;flagOne, sizeof(flagOne));</span><br><span class="line">       </span><br><span class="line">       AudioStreamBasicDescription desc = &#123;0&#125;;</span><br><span class="line">       desc.mSampleRate = _configuration.audioSampleRate;</span><br><span class="line">       desc.mFormatID = kAudioFormatLinearPCM;</span><br><span class="line">       desc.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked;</span><br><span class="line">       desc.mChannelsPerFrame = (UInt32)_configuration.numberOfChannels;</span><br><span class="line">       desc.mFramesPerPacket = 1;</span><br><span class="line">       desc.mBitsPerChannel = 16;</span><br><span class="line">       desc.mBytesPerFrame = desc.mBitsPerChannel / 8 * desc.mChannelsPerFrame;</span><br><span class="line">       desc.mBytesPerPacket = desc.mBytesPerFrame * desc.mFramesPerPacket;</span><br><span class="line">       </span><br><span class="line">       AURenderCallbackStruct cb;</span><br><span class="line">       cb.inputProcRefCon = (__bridge void *)(self);</span><br><span class="line">       cb.inputProc = handleInputBuffer;</span><br><span class="line">       status = AudioUnitSetProperty(self.componetInstance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &amp;desc, sizeof(desc));</span><br><span class="line">       status = AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, 1, &amp;cb, sizeof(cb));</span><br><span class="line">       </span><br><span class="line">       status = AudioUnitInitialize(self.componetInstance);</span><br><span class="line">       </span><br><span class="line">       if (noErr != status) &#123;</span><br><span class="line">           [self handleAudioComponentCreationFailure];</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       [session setPreferredSampleRate:_configuration.audioSampleRate error:nil];</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">       [session setActive:YES error:nil];</span><br></pre></td></tr></table></figure>
+<p>视频的录制：调用GPUImage中的GPUImageVideoCamera</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">_videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:_configuration.avSessionPreset cameraPosition:AVCaptureDevicePositionFront];</span><br><span class="line">_videoCamera.outputImageOrientation = _configuration.orientation;</span><br><span class="line">_videoCamera.horizontallyMirrorFrontFacingCamera = NO;</span><br><span class="line">_videoCamera.horizontallyMirrorRearFacingCamera = NO;</span><br><span class="line">_videoCamera.frameRate = (int32_t)_configuration.videoFrameRate;</span><br><span class="line">        </span><br><span class="line">_gpuImageView = [[GPUImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];</span><br><span class="line">[_gpuImageView setFillMode:kGPUImageFillModePreserveAspectRatioAndFill];</span><br><span class="line">[_gpuImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];</span><br><span class="line">        [_gpuImageView setInputRotation:kGPUImageFlipHorizonal atIndex:0];</span><br></pre></td></tr></table></figure>
+<p>转载请注明原地址，Clang的博客：<a href="https://chenhu1001.github.io" target="_blank" rel="noopener">https://chenhu1001.github.io</a> 谢谢！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/02/iOS直播技术分享-音视频采集（一）/" data-id="cjgz3hh1d000pn5xf1afkawzx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/音视频/">音视频</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/11/iOS直播技术分享-音频编码（二）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS直播技术分享-音频编码（二）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/01/iOS判断一个库是否包含bitcode/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">iOS判断一个库是否包含bitcode</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/音视频/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/音视频/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/音视频/" style="font-size: 20px;">音视频</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/11/macOS下如何编译FFmpeg-for-macOS-APP/">macOS下如何编译FFmpeg for macOS APP</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-直播播放器（六）/">iOS直播技术分享-直播播放器（六）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-延迟优化（五）/">iOS直播技术分享-延迟优化（五）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-推流和传输（四）/">iOS直播技术分享-推流和传输（四）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/11/iOS直播技术分享-视频编码（三）/">iOS直播技术分享-视频编码（三）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

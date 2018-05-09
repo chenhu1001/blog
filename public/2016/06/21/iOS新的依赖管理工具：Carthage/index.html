@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>iOS新的依赖管理工具：Carthage | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1、什么是Carthage Carthage的目标是用最简单的方式来管理Cocoa第三方框架。 基本的工作流如下： 创建一个Cartfile文件，包含你希望在项目中使用的框架的列表。 运行Carthage，将会获取列出的框架并编译它们。 将编译完成的.framework二进制文件拖拽到你的Xcode项目当中。   Carthage编译你的依赖，并提供框架的二进制文件，但你仍然保留对项目的结构和设置">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS新的依赖管理工具：Carthage">
+<meta property="og:url" content="http://yoursite.com/2016/06/21/iOS新的依赖管理工具：Carthage/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1、什么是Carthage Carthage的目标是用最简单的方式来管理Cocoa第三方框架。 基本的工作流如下： 创建一个Cartfile文件，包含你希望在项目中使用的框架的列表。 运行Carthage，将会获取列出的框架并编译它们。 将编译完成的.framework二进制文件拖拽到你的Xcode项目当中。   Carthage编译你的依赖，并提供框架的二进制文件，但你仍然保留对项目的结构和设置">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2014909-e5d64c47efab9c7d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-05-07T12:23:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS新的依赖管理工具：Carthage">
+<meta name="twitter:description" content="1、什么是Carthage Carthage的目标是用最简单的方式来管理Cocoa第三方框架。 基本的工作流如下： 创建一个Cartfile文件，包含你希望在项目中使用的框架的列表。 运行Carthage，将会获取列出的框架并编译它们。 将编译完成的.framework二进制文件拖拽到你的Xcode项目当中。   Carthage编译你的依赖，并提供框架的二进制文件，但你仍然保留对项目的结构和设置">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2014909-e5d64c47efab9c7d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS新的依赖管理工具：Carthage" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/21/iOS新的依赖管理工具：Carthage/" class="article-date">
+  <time datetime="2016-06-21T06:05:24.000Z" itemprop="datePublished">2016-06-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS新的依赖管理工具：Carthage
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1、什么是Carthage"><a href="#1、什么是Carthage" class="headerlink" title="1、什么是Carthage"></a>1、什么是<a href="https://github.com/Carthage/Carthage" target="_blank" rel="noopener">Carthage</a></h2><ul>
+<li>Carthage的目标是用最简单的方式来管理Cocoa第三方框架。</li>
+<li>基本的工作流如下：<ul>
+<li>创建一个Cartfile文件，包含你希望在项目中使用的框架的列表。</li>
+<li>运行Carthage，将会获取列出的框架并编译它们。</li>
+<li>将编译完成的.framework二进制文件拖拽到你的Xcode项目当中。</li>
+</ul>
+</li>
+<li>Carthage编译你的依赖，并提供框架的二进制文件，但你仍然保留对项目的结构和设置的完整控制。Carthage不会自动的修改你的项目文件或编译设置。<a id="more"></a>
+</li>
+</ul>
+<h2 id="2、Carthage与CocoaPods的不同"><a href="#2、Carthage与CocoaPods的不同" class="headerlink" title="2、Carthage与CocoaPods的不同"></a>2、Carthage与CocoaPods的不同</h2><ul>
+<li>CocoaPods是已存在很长时间的Cocoa依赖管理器，那么为什么要创建Carthage呢？</li>
+<li>CocoaPods默认会自动创建并更新你的应用程序和所有依赖的Xcode workspace。Carthage使用xcodebuild来编译框架的二进制文件，但如何集成它们将交由用户自己判断。CocoaPods的方法更易于使用，但Carthage更灵活并且是非侵入性的。</li>
+<li>Carthage创建的是去中心化的依赖管理器。它没有总项目的列表，这能够减少维护工作并且避免任何中心化带来的问题（如中央服务器宕机）。不过，这样也有一些缺点，就是项目的发现将更困难，用户将依赖于Github的趋势页面或者类似的代码库来寻找项目。</li>
+<li>CocoaPods项目同时还必须包含一个podspec文件，里面是项目的一些元数据，以及确定项目的编译方式。Carthage使用xcodebuild来编译依赖，而不是将他们集成进一个workspace，因此无需类似的设定文件。不过依赖需要包含自己的Xcode工程文件来描述如何编译。</li>
+<li>最后，我们创建Carthage的原因是想要一种尽可能简单的工具（一个只关心本职工作的依赖管理器），而不是取代部分Xcode的功能，或者需要让框架作者做一些额外的工作。CocoaPods提供的一些特性很棒，但由于附加的复杂性，它们将不会被包含在Carthage当中。</li>
+</ul>
+<h2 id="3、安装Carthage"><a href="#3、安装Carthage" class="headerlink" title="3、安装Carthage"></a>3、安装Carthage</h2><ul>
+<li>通过pkg包安装<ul>
+<li>Carthage提供OS X平台的pkg安装文件，可以从Github的最新<a href="https://github.com/Carthage/Carthage/releases" target="_blank" rel="noopener">release</a>中找到，按照引导一步步安装即可。</li>
+</ul>
+</li>
+<li>通过终端命令安装<ul>
+<li>安装brew<br>安装命令如下：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -LsSf http://github.com/mxcl/homebrew/tarball/master | sudo tar xvz -C/usr/local --strip 1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后执行如下命令获取最新版本：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew update</span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装carthage</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo brew install carthage</span><br></pre></td></tr></table></figure>
+<ul>
+<li>卸载的话，命令如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo brew uninstall carthage</span><br></pre></td></tr></table></figure>
+<h2 id="4、使用Carthage"><a href="#4、使用Carthage" class="headerlink" title="4、使用Carthage"></a>4、使用Carthage</h2><ul>
+<li>创建一个Cartfile文件，将你想要使用的框架列在里面<br>  类似于 CocoaPods 中的 Podfile 文件，把需要的包写进去就行了，具体可参阅<a href="https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile" target="_blank" rel="noopener">官方说明</a>，如：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">\# 必须最低 2.3.1 版本</span><br><span class="line">github &quot;ReactiveCocoa/ReactiveCocoa&quot; &gt;= 2.3.1</span><br><span class="line"></span><br><span class="line">\# 必须 1.x 版本</span><br><span class="line">github &quot;Mantle/Mantle&quot; ~&gt; 1.0    # (大于或等于 1.0 ，小于 2.0)</span><br><span class="line"></span><br><span class="line">\# 必须 0.4.1 版本</span><br><span class="line"></span><br><span class="line">github &quot;jspahrsummers/libextobjc&quot; == 0.4.1</span><br><span class="line"></span><br><span class="line">\# 使用最新的版本</span><br><span class="line"></span><br><span class="line">github &quot;jspahrsummers/xcconfigs&quot;</span><br><span class="line"></span><br><span class="line">\# 使用一个私有项目，在 &quot;development&quot; 分支</span><br><span class="line">git &quot;https://enterprise.local/desktop/git-error-translations.git&quot; &quot;development&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>运行carthage update，将获取依赖文件到一个Carthage.checkout文件夹，然后编译每个依赖</li>
+<li>在项目中引入依赖的 Framkework，只需要在对应Target中的Build Setting中的Framework Search Path项加入以下路径，Xcode 便会自动搜索目录下的Framework（$(SRCROOT)/Carthage/Build/iOS）</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2014909-e5d64c47efab9c7d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="更新carthage"></p>
+<p>转载请注明原地址，Clang的博客：<a href="https://chenhu1001.github.io" target="_blank" rel="noopener">https://chenhu1001.github.io</a> 谢谢！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/21/iOS新的依赖管理工具：Carthage/" data-id="cjgz3hh17000cn5xfxqlrmiyn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/01/iOS判断一个库是否包含bitcode/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS判断一个库是否包含bitcode
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/21/函数式响应式编程（FRP）的基本理解/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">函数式响应式编程（FRP）的基本理解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/音视频/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/音视频/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/音视频/" style="font-size: 20px;">音视频</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/11/macOS下如何编译FFmpeg-for-macOS-APP/">macOS下如何编译FFmpeg for macOS APP</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-直播播放器（六）/">iOS直播技术分享-直播播放器（六）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-延迟优化（五）/">iOS直播技术分享-延迟优化（五）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-推流和传输（四）/">iOS直播技术分享-推流和传输（四）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/11/iOS直播技术分享-视频编码（三）/">iOS直播技术分享-视频编码（三）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>iOS判断一个库是否包含bitcode | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;emsp;&amp;emsp;苹果在 Xcode 7 中引入了 bitcode，在打包提交时，会包含 bitcode。如果项目用到了以二进制格式发布的第三方库，第三方库也需要包含 bitcode 才行。如果没有包含 bitcode，编译时会报错，除非手动关闭 bitcode 特性。">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS判断一个库是否包含bitcode">
+<meta property="og:url" content="http://yoursite.com/2016/07/01/iOS判断一个库是否包含bitcode/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;苹果在 Xcode 7 中引入了 bitcode，在打包提交时，会包含 bitcode。如果项目用到了以二进制格式发布的第三方库，第三方库也需要包含 bitcode 才行。如果没有包含 bitcode，编译时会报错，除非手动关闭 bitcode 特性。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-07T12:23:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS判断一个库是否包含bitcode">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;苹果在 Xcode 7 中引入了 bitcode，在打包提交时，会包含 bitcode。如果项目用到了以二进制格式发布的第三方库，第三方库也需要包含 bitcode 才行。如果没有包含 bitcode，编译时会报错，除非手动关闭 bitcode 特性。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS判断一个库是否包含bitcode" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/01/iOS判断一个库是否包含bitcode/" class="article-date">
+  <time datetime="2016-07-01T06:06:05.000Z" itemprop="datePublished">2016-07-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS判断一个库是否包含bitcode
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;苹果在 Xcode 7 中引入了 bitcode，在打包提交时，会包含 bitcode。如果项目用到了以二进制格式发布的第三方库，第三方库也需要包含 bitcode 才行。如果没有包含 bitcode，编译时会报错，除非手动关闭 bitcode 特性。<br><a id="more"></a><br>&emsp;&emsp;除了通过编译时的报错来判断第三方库是否包含 bitcode，我们也可以自己检查。首先需要判断 library 是否是 fat 的，可以用 lipo 命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -info libdemo.a</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;其中 libdemo.a 就是我们要检查的文件。一般第三方库都会发布 fat library 以支持各个 CPU 架构。<br>&emsp;&emsp;接着，如果是 fat library，需要将某个 CPU 架构的 slice 提取出来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -thin arm64 libdemo.a -output libdemo-arm64.a</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;这样，我们就将 arm64 这个 slice 提取出来了。接下来我们需要将这个 slice 里面的目标文件解压出来，可以用 ar 命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -x libdemo-arm64.a</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;假设我们解压了 libdemo_la-util.o 这个目标文件。最后，我们检查目标文件中，是否包含 __bicode 这个段（segment）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">otool -l libdemo_la-util.o | grep bitcode</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;如果找到了，说明第三方库是支持 bitcode 的。 </p>
+<p>原文链接：<a href="http://www.tuicool.com/articles/nMzABvM" target="_blank" rel="noopener">http://www.tuicool.com/articles/nMzABvM</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/01/iOS判断一个库是否包含bitcode/" data-id="cjgz3hh100005n5xf5jc80wsx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/02/iOS直播技术分享-音视频采集（一）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS直播技术分享-音视频采集（一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/21/iOS新的依赖管理工具：Carthage/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">iOS新的依赖管理工具：Carthage</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/音视频/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/音视频/">音视频</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/音视频/" style="font-size: 20px;">音视频</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/11/macOS下如何编译FFmpeg-for-macOS-APP/">macOS下如何编译FFmpeg for macOS APP</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-直播播放器（六）/">iOS直播技术分享-直播播放器（六）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-延迟优化（五）/">iOS直播技术分享-延迟优化（五）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/iOS直播技术分享-推流和传输（四）/">iOS直播技术分享-推流和传输（四）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/11/iOS直播技术分享-视频编码（三）/">iOS直播技术分享-视频编码（三）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
