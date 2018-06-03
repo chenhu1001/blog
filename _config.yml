@@ -3,17 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle:
-description:
+title: Clang的技术博客
+subtitle: 信号与信息处理，硕士。方向：音视频、图像处理。GitHub：https://github.com/chenhu1001
+description: 业精于勤，荒于嬉
 keywords:
-author: John Doe
-language:
+author: Clang
+language: zh-Hans
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: https://chenhu1001.github.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -74,8 +74,12 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: next
+stylus:
+  compress: true
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repository: https://github.com/chenhu1001/chenhu1001.github.io.git
+  branch: master

@@ -117,14 +117,17 @@ index_with_subtitle: false
 # Value before `||` delimeter is the target link.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, question icon will be loaded.
 menu:
-  home: / || home
-  #about: /about/ || user
-  #tags: /tags/ || tags
-  #categories: /categories/ || th
-  archives: /archives/ || archive
-  #schedule: /schedule/ || calendar
-  #sitemap: /sitemap.xml || sitemap
-  #commonweal: /404/ || heartbeat
+  home: /
+  #categories: /categories
+  #about: /about
+  archives: /archives
+  iOS: /categories/iOS
+  av: /categories/音视频
+  Java: /categories/Java
+  other: /categories/随笔
+  #tags: /tags
+  #sitemap: /sitemap.xml
+  #commonweal: /404.html
 
 # Enable/Disable menu icons / item badges.
 menu_settings:
@@ -136,10 +139,10 @@ menu_settings:
 # ---------------------------------------------------------------
 
 # Schemes
-scheme: Muse
+#scheme: Muse
 #scheme: Mist
 #scheme: Pisces
-#scheme: Gemini
+scheme: Gemini
 
 
 # ---------------------------------------------------------------
@@ -154,9 +157,9 @@ site_state: true
 # Key is the link label showing to end users.
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
-#social:
-  #GitHub: https://github.com/yourname || github
-  #E-Mail: mailto:yourname@gmail.com || envelope
+social:
+  GitHub: https://github.com/chenhu1001 || github
+  E-Mail: mailto:chenhu656719@gmail.com || envelope
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
   #FB Page: https://www.facebook.com/yourname || facebook
@@ -170,6 +173,7 @@ social_icons:
   enable: true
   icons_only: false
   transition: false
+  GitHub: github
   # Dependencies: exturl: true in Tags Settings section below.
   # To encrypt links above use https://www.base64encode.org
   # Example encoded link: `GitHub: aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQ= || github`
@@ -192,7 +196,7 @@ links_layout: block
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
 # in site  directory(source/uploads): /uploads/avatar.gif
-#avatar: /images/avatar.gif
+avatar: http://7xk4rv.com1.z0.glb.clouddn.com/%E5%A4%B4%E5%83%8F.JPG
 
 # Table Of Contents in the Sidebar
 toc:
@@ -470,10 +474,9 @@ pangu: false
 
 # Disqus
 disqus:
-  enable: false
-  shortname:
+  enable: true
+  shortname: clang-1
   count: true
-  lazyload: false
 
 # Hypercomments
 #hypercomments_id:
