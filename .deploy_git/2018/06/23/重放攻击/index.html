@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.2.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.2.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;emsp;&amp;emsp;最近系统上线之前需要做安全测试，安全测试人员指出了系统存在重放攻击，由于之前项目没有遇到过这样的问题，在这里就详细探讨一下重放攻击。">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重放攻击">
+<meta property="og:url" content="https://chenhu1001.github.com/2018/06/23/重放攻击/index.html">
+<meta property="og:site_name" content="Clang的技术博客">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;最近系统上线之前需要做安全测试，安全测试人员指出了系统存在重放攻击，由于之前项目没有遇到过这样的问题，在这里就详细探讨一下重放攻击。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-05T02:16:47.263Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重放攻击">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;最近系统上线之前需要做安全测试，安全测试人员指出了系统存在重放攻击，由于之前项目没有遇到过这样的问题，在这里就详细探讨一下重放攻击。">
+
+
+
+
+
+
+  <link rel="canonical" href="https://chenhu1001.github.com/2018/06/23/重放攻击/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>重放攻击 | Clang的技术博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Clang的技术博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">信号与信息处理，硕士。方向：音视频、图像处理。GitHub：https://github.com/chenhu1001</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-ios">
+    <a href="/categories/iOS" rel="section">iOS</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-av">
+    <a href="/categories/音视频" rel="section">音视频</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-java">
+    <a href="/categories/Java" rel="section">Java</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-other">
+    <a href="/categories/随笔" rel="section">随笔</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://chenhu1001.github.com/2018/06/23/重放攻击/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Clang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://qnc.planlogo.cn/%E5%A4%B4%E5%83%8F.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Clang的技术博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">重放攻击
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-06-23 15:38:10" itemprop="dateCreated datePublished" datetime="2018-06-23T15:38:10+08:00">2018-06-23</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-11-05 10:16:47" itemprop="dateModified" datetime="2018-11-05T10:16:47+08:00">2018-11-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/23/重放攻击/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/23/重放攻击/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&emsp;&emsp;最近系统上线之前需要做安全测试，安全测试人员指出了系统存在重放攻击，由于之前项目没有遇到过这样的问题，在这里就详细探讨一下重放攻击。<br><a id="more"></a><br>&emsp;&emsp;所谓重放攻击就是攻击者发送一个目的主机已接收过的包，来达到欺骗系统的目的，主要用于身份认证过程。攻击者利用网络监听或者其他方式盗取认证凭据，之后再把它重新发给认证服务器。从这个解释上理解，加密可以有效防止会话劫持，但是却防止不了重放攻击。重放攻击任何网络通讯过程中都可能发生。</p>
+<h2 id="1、基于timestamp的方案"><a href="#1、基于timestamp的方案" class="headerlink" title="1、基于timestamp的方案"></a>1、基于timestamp的方案</h2><p>&emsp;&emsp;每次HTTP请求，都需要加上timestamp参数，然后把timestamp和其他参数一起进行数字签名。因为一次正常的HTTP请求，从发出到达服务器一般都不会超过60s，所以服务器收到HTTP请求之后，首先判断时间戳参数与当前时间相比较，是否超过了60s，如果超过了则认为是非法的请求。<br>假如黑客通过抓包得到了我们的请求url：<br><a href="http://clang.tech/index/Info?uid=ZX07&amp;stime=1480862753&amp;sign=80b886d71449cb33355d017893720666" target="_blank" rel="noopener">http://clang.tech/index/Info?uid=ZX07&amp;stime=1480862753&amp;sign=80b886d71449cb33355d017893720666</a><br>其中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String sign = md5(uid, token, stime);</span><br></pre></td></tr></table></figure></p>
+<p>一般情况下，黑客从抓包重放请求耗时远远超过了60s，所以此时请求中的stime参数已经失效了。<br>如果黑客修改stime参数为当前的时间戳，则sign参数对应的数字签名就会失效，因为黑客不知道token值，没有办法生成新的数字签名。<br>但这种方式的漏洞也是显而易见的，如果在60s之内进行重放攻击，那就没办法了，所以这种方式不能保证请求仅一次有效。</p>
+<h2 id="2、基于nonce的方案"><a href="#2、基于nonce的方案" class="headerlink" title="2、基于nonce的方案"></a>2、基于nonce的方案</h2><p>nonce的意思是仅一次有效的随机字符串，要求每次请求时，该参数要保证不同，所以该参数一般与时间戳有关，我们这里为了方便起见，直接使用时间戳的16进制，实际使用时可以加上客户端的ip地址、mac地址等信息做个哈希之后，作为nonce参数。<br>我们将每次请求的nonce参数存储到一个“集合”中，可以json格式存储到数据库或缓存中。<br>每次处理HTTP请求时，首先判断该请求的nonce参数是否在该“集合”中，如果存在则认为是非法请求。<br>假如黑客通过抓包得到了我们的请求url：<br><a href="http://clang.tech/index/Info?uid=ZX07&amp;nonce=58442c21&amp;sign=80b886d71449cb33355d017893720666" target="_blank" rel="noopener">http://clang.tech/index/Info?uid=ZX07&amp;nonce=58442c21&amp;sign=80b886d71449cb33355d017893720666</a><br>其中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String sign = md5(uid, token, nonce);</span><br></pre></td></tr></table></figure></p>
+<p>这种方式也有很大的问题，那就是存储nonce参数的“集合”会越来越大，验证nonce是否存在“集合”中的耗时会越来越长。我们不能让nonce“集合”无限大，所以需要定期清理该“集合”，但是一旦该“集合”被清理，我们就无法验证被清理了的nonce参数了。也就是说，假设该“集合”平均1天清理一次的话，我们抓取到的该url，虽然当时无法进行重放攻击，但是我们还是可以每隔一天进行一次重放攻击的。而且存储24小时内，所有请求的“nonce”参数，也是一笔不小的开销。</p>
+<h2 id="3、基于timestamp和nonce的方案"><a href="#3、基于timestamp和nonce的方案" class="headerlink" title="3、基于timestamp和nonce的方案"></a>3、基于timestamp和nonce的方案</h2><p>那我们如果同时使用timestamp和nonce参数呢？<br>nonce的一次性可以解决timestamp参数60s的问题，timestamp可以解决nonce参数“集合”越来越大的问题。<br>我们在timestamp方案的基础上，加上nonce参数，因为timstamp参数对于超过60s的请求，都认为非法请求，所以我们只需要存储60s的nonce参数的“集合”即可。<br>假如黑客通过抓包得到了我们的请求url：<br><a href="http://clang.tech/index/Info?uid=ZX07&amp;stime=1480862753&amp;nonce=58442c21&amp;sign=80b886d71449cb33355d017893720666" target="_blank" rel="noopener">http://clang.tech/index/Info?uid=ZX07&amp;stime=1480862753&amp;nonce=58442c21&amp;sign=80b886d71449cb33355d017893720666</a><br>其中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String sign = md5(uid, token, stime, nonce);</span><br></pre></td></tr></table></figure></p>
+<p>如果在60s内，重放该HTTP请求，因为nonce参数已经在首次请求的时候被记录在服务器的nonce参数“集合”中，所以会被判断为非法请求。超过60s之后，stime参数就会失效，此时因为黑客不清楚token的值，所以无法重新生成签名。<br>综上，我们认为一次正常的HTTP请求发送不会超过60s，在60s之内的重放攻击可以由nonce参数保证，超过60s的重放攻击可以由stime参数保证。<br>因为nonce参数只会在60s之内起作用，所以只需要保存60s之内的nonce参数即可。<br>我们并不一定要每个60s去清理该nonce参数的集合，只需要在新的nonce到来时，判断nonce集合最后一次修改时间，超过60s的话，就清空该集合，存放新的nonce参数集合。其实nonce参数集合可以存放的时间更久一些，但是最少是60s。<br>随机数集合可以根据业务场景采用定期清理或根据大小自动清理的方案，例如该接口每秒的请求数最高为1000，则60s内的请求数量最多为1500*60=90000，则我们在每次请求后检查集合大小是否超过90000，若超高该数量则清空。<br>验证流程:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//判断stime参数是否有效</span><br><span class="line">if( $now - $stime &gt; 60)&#123;</span><br><span class="line">    die(&quot;请求超时&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//判断nonce参数是否在“集合”已存在</span><br><span class="line">if( in_array($nonce,$nonceArray) )&#123;</span><br><span class="line">    die(&quot;请求仅一次有效&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//验证数字签名    </span><br><span class="line">if ( $sign != md5($uid.$token.$stime.$nonce) )&#123;</span><br><span class="line">    die(&quot;数字签名验证失败&quot;);</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">if( $now - $nonceArray-&gt;lastModifyTime &gt; 60 )&#123;</span><br><span class="line">    $nonceArray = null;</span><br><span class="line">&#125;</span><br><span class="line">$nonceArray.push($nonce);</span><br><span class="line">*/</span><br><span class="line">//处理随机数</span><br><span class="line">$key = &apos;nonce&apos;+$uid;</span><br><span class="line">if($redis-&gt;sismember($key,$nonce) === true)&#123;</span><br><span class="line">    die(&apos;拒绝重放攻击请求&apos;);</span><br><span class="line">&#125;</span><br><span class="line">if($redis-&gt;scard($key) &gt; 90000)&#123;</span><br><span class="line">    $redis-&gt;del($key);</span><br><span class="line">&#125;</span><br><span class="line">$redis-&gt;sadd($key,$nonce);</span><br><span class="line">//重放攻击检查完成</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/11/macOS下如何编译FFmpeg-for-macOS-APP/" rel="next" title="macOS下如何编译FFmpeg for macOS APP">
+                <i class="fa fa-chevron-left"></i> macOS下如何编译FFmpeg for macOS APP
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://qnc.planlogo.cn/%E5%A4%B4%E5%83%8F.JPG" alt="Clang">
+            
+              <p class="site-author-name" itemprop="name">Clang</p>
+              <p class="site-description motion-element" itemprop="description">业精于勤，荒于嬉</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chenhu1001" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:chenhu656719@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、基于timestamp的方案"><span class="nav-number">1.</span> <span class="nav-text">1、基于timestamp的方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、基于nonce的方案"><span class="nav-number">2.</span> <span class="nav-text">2、基于nonce的方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、基于timestamp和nonce的方案"><span class="nav-number">3.</span> <span class="nav-text">3、基于timestamp和nonce的方案</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Clang</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.2.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.2.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.2.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.2.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.2.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://clang-1.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://chenhu1001.github.com/2018/06/23/重放攻击/';
+        this.page.identifier = '2018/06/23/重放攻击/';
+        this.page.title = '重放攻击';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://clang-1.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

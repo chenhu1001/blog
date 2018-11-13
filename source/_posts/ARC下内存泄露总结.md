@@ -92,7 +92,7 @@ typedef void (^EOCNetworkFetcherCompletionHandler)(NSData *data);
 > * 而EOCClass实例通过strong实例变量保留了EOCNetworkFetcher，最后EOCNetworkFetcher实例对象又保留了handler块。
 
 引用关系如下下图所示
-![循环引用示意图](http://7xk4rv.com1.z0.glb.clouddn.com/ARC%E4%B8%8B%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E6%80%BB%E7%BB%93_1.png)
+![循环引用示意图](http://chenhu1001.github.io/images/ARC%E4%B8%8B%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E6%80%BB%E7%BB%93_1.png)
   
 要想打破保留环，解决办法：
 

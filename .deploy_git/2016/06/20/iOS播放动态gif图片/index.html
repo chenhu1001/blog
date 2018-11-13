@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.2.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.2.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;emsp;&amp;emsp;图片分为静态和动态两种，图片的格式有很多种，在开发中比较常见的是.png和.jpg的静态图片，但有的时候在App中需要播放动态图片，比如.gif格式的小表情头像，在IOS中并没有提供直接显示动态图片的控件，下面就介绍几种显示动态图片的方式。">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS播放动态gif图片">
+<meta property="og:url" content="https://chenhu1001.github.com/2016/06/20/iOS播放动态gif图片/index.html">
+<meta property="og:site_name" content="Clang的技术博客">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;图片分为静态和动态两种，图片的格式有很多种，在开发中比较常见的是.png和.jpg的静态图片，但有的时候在App中需要播放动态图片，比如.gif格式的小表情头像，在IOS中并没有提供直接显示动态图片的控件，下面就介绍几种显示动态图片的方式。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-05T02:16:47.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS播放动态gif图片">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;图片分为静态和动态两种，图片的格式有很多种，在开发中比较常见的是.png和.jpg的静态图片，但有的时候在App中需要播放动态图片，比如.gif格式的小表情头像，在IOS中并没有提供直接显示动态图片的控件，下面就介绍几种显示动态图片的方式。">
+
+
+
+
+
+
+  <link rel="canonical" href="https://chenhu1001.github.com/2016/06/20/iOS播放动态gif图片/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>iOS播放动态gif图片 | Clang的技术博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Clang的技术博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">信号与信息处理，硕士。方向：音视频、图像处理。GitHub：https://github.com/chenhu1001</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-ios">
+    <a href="/categories/iOS" rel="section">iOS</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-av">
+    <a href="/categories/音视频" rel="section">音视频</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-java">
+    <a href="/categories/Java" rel="section">Java</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-other">
+    <a href="/categories/随笔" rel="section">随笔</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://chenhu1001.github.com/2016/06/20/iOS播放动态gif图片/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Clang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://qnc.planlogo.cn/%E5%A4%B4%E5%83%8F.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Clang的技术博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS播放动态gif图片
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-06-20 14:05:55" itemprop="dateCreated datePublished" datetime="2016-06-20T14:05:55+08:00">2016-06-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-11-05 10:16:47" itemprop="dateModified" datetime="2018-11-05T10:16:47+08:00">2018-11-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/06/20/iOS播放动态gif图片/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/06/20/iOS播放动态gif图片/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&emsp;&emsp;图片分为静态和动态两种，图片的格式有很多种，在开发中比较常见的是.png和.jpg的静态图片，但有的时候在App中需要播放动态图片，比如.gif格式的小表情头像，在IOS中并没有提供直接显示动态图片的控件，下面就介绍几种显示动态图片的方式。<br><a id="more"></a></p>
+<h3 id="一、UIImageView用来显示图片，使用UIImageView中的动画数组来实现图片的动画效果"><a href="#一、UIImageView用来显示图片，使用UIImageView中的动画数组来实现图片的动画效果" class="headerlink" title="一、UIImageView用来显示图片，使用UIImageView中的动画数组来实现图片的动画效果"></a>一、UIImageView用来显示图片，使用UIImageView中的动画数组来实现图片的动画效果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 创建UIImageView，添加到界面 </span><br><span class="line">UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 20, 100, 100)];</span><br><span class="line">[self.view addSubview:imageView]; </span><br><span class="line">//</span><br><span class="line">// 创建一个数组，数组中按顺序添加要播放的图片（图片为静态的图片） </span><br><span class="line">NSMutableArray *imgArray = [NSMutableArray array]; </span><br><span class="line">for (int i=1; i&lt;7; i++) &#123; </span><br><span class="line">    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@&quot;clock%02d.png&quot;,i]]; </span><br><span class="line">    [imgArray addObject:image]; </span><br><span class="line">&#125; </span><br><span class="line">// 把存有UIImage的数组赋给动画图片数组 imageView.animationImages = imgArray; </span><br><span class="line">// 设置执行一次完整动画的时长</span><br><span class="line"> imageView.animationDuration = 6*0.15; </span><br><span class="line">// 动画重复次数 （0为重复播放） imageView.animationRepeatCount = 0; </span><br><span class="line">// 开始播放动画  [imageView startAnimating]; </span><br><span class="line">// 停止播放动画 - (void)stopAnimating; </span><br><span class="line">// 判断是否正在执行动画 - (BOOL)isAnimating;</span><br></pre></td></tr></table></figure>
+<h2 id="二、用UIWebView来显示动态图片"><a href="#二、用UIWebView来显示动态图片" class="headerlink" title="二、用UIWebView来显示动态图片"></a>二、用UIWebView来显示动态图片</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 得到图片的路径 </span><br><span class="line">NSString *path = [[NSBundle mainBundle] pathForResource:@&quot;happy&quot; ofType:@&quot;gif&quot;]; </span><br><span class="line">// 将图片转为NSData </span><br><span class="line">NSData *gifData = [NSData dataWithContentsOfFile:path]; </span><br><span class="line">// 创建一个webView，添加到界面 </span><br><span class="line">UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 150, 200, 200)]; </span><br><span class="line">[self.view addSubview:webView]; </span><br><span class="line">// 自动调整尺寸 </span><br><span class="line">webView.scalesPageToFit = YES;</span><br><span class="line">// 禁止滚动</span><br><span class="line">webView.scrollView.scrollEnabled = NO; </span><br><span class="line">// 设置透明效果 </span><br><span class="line">webView.backgroundColor = [UIColor clearColor];webView.opaque = 0; </span><br><span class="line">// 加载数据 </span><br><span class="line">[webView loadData:gifData MIMEType:@&quot;image/gif&quot; textEncodingName:nil baseURL:nil];</span><br></pre></td></tr></table></figure>
+<h2 id="三、使用第三方FLAnimatedImage"><a href="#三、使用第三方FLAnimatedImage" class="headerlink" title="三、使用第三方FLAnimatedImage"></a>三、使用第三方FLAnimatedImage</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FLAnimatedImage *image = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@&quot;https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif&quot;]]];</span><br><span class="line">FLAnimatedImageView *imageView = [[FLAnimatedImageView alloc] init];</span><br><span class="line">imageView.animatedImage = image;</span><br><span class="line">imageView.frame = CGRectMake(0.0, 0.0, 100.0, 100.0);</span><br><span class="line">[self.view addSubview:imageView];</span><br></pre></td></tr></table></figure>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>1、通过UIImageView显示动画效果，实际上是把动态的图拆成了一组静态的图，放到数组中，播放的时候依次从数组中取出。如果播放的图片比较少占得内存比较小或者比较常用（比如工具条上一直显示的动态小图标），可以选择用imageNamed：方式获取图片，但是通过这种方式加到内存中，使用结束，不会自己释放，多次播放动画会造成内存溢出问题。因此，对于大图或经常更换的图，在取图片的时候可以选择imageWithContentsOfFile:方式获取图片，优化内存。<br>2、使用UIWebView显示图片需要注意显示图片的尺寸与UIWebView尺寸的设置，如果只是为了显示动态图片，可以禁止UIWebView滚动。在显示动态图片的时候，即使是动图的背景处为透明，默认显示出来是白色背景，这个时候需要手动设置UIWebView的透明才能达到显示动图背景透明的效果。<br>3、UIImageView与第三方的FLAnimatedImage都是通过定时器来控制图片模拟的动画，播放的时候是设置每一帧的时长，因此在使用的时候，要尽量与动图原本的时长靠近，不然动画效果会有些奇怪。而通过UIWebView加载Gif动图的时候会保持原有的帧速，不需要再次设置。</p>
+<p>转载请注明原地址，Clang的博客：<a href="https://chenhu1001.github.io" target="_blank" rel="noopener">https://chenhu1001.github.io</a> 谢谢！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/20/Realm，一个跨平台、高性能的数据库/" rel="next" title="Realm，一个跨平台、高性能的数据库">
+                <i class="fa fa-chevron-left"></i> Realm，一个跨平台、高性能的数据库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/21/函数式响应式编程（FRP）的基本理解/" rel="prev" title="函数式响应式编程（FRP）的基本理解">
+                函数式响应式编程（FRP）的基本理解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://qnc.planlogo.cn/%E5%A4%B4%E5%83%8F.JPG" alt="Clang">
+            
+              <p class="site-author-name" itemprop="name">Clang</p>
+              <p class="site-description motion-element" itemprop="description">业精于勤，荒于嬉</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chenhu1001" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:chenhu656719@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、UIImageView用来显示图片，使用UIImageView中的动画数组来实现图片的动画效果"><span class="nav-number">1.</span> <span class="nav-text">一、UIImageView用来显示图片，使用UIImageView中的动画数组来实现图片的动画效果</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#二、用UIWebView来显示动态图片"><span class="nav-number"></span> <span class="nav-text">二、用UIWebView来显示动态图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、使用第三方FLAnimatedImage"><span class="nav-number"></span> <span class="nav-text">三、使用第三方FLAnimatedImage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、总结"><span class="nav-number"></span> <span class="nav-text">四、总结</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Clang</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.2.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.2.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.2.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.2.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.2.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://clang-1.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://chenhu1001.github.com/2016/06/20/iOS播放动态gif图片/';
+        this.page.identifier = '2016/06/20/iOS播放动态gif图片/';
+        this.page.title = 'iOS播放动态gif图片';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://clang-1.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

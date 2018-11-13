@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.2.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.2.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="音视频的直播系统是一个复杂的工程系统，要做到非常低延迟的直播，需要复杂的系统工程优化和对各组件非常熟悉的掌握。这里分享几个简单而常用的调优技巧。">
+<meta name="keywords" content="音视频">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS直播技术分享-延迟优化（五）">
+<meta property="og:url" content="https://chenhu1001.github.com/2016/10/25/iOS直播技术分享-延迟优化（五）/index.html">
+<meta property="og:site_name" content="Clang的技术博客">
+<meta property="og:description" content="音视频的直播系统是一个复杂的工程系统，要做到非常低延迟的直播，需要复杂的系统工程优化和对各组件非常熟悉的掌握。这里分享几个简单而常用的调优技巧。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-05T02:16:47.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS直播技术分享-延迟优化（五）">
+<meta name="twitter:description" content="音视频的直播系统是一个复杂的工程系统，要做到非常低延迟的直播，需要复杂的系统工程优化和对各组件非常熟悉的掌握。这里分享几个简单而常用的调优技巧。">
+
+
+
+
+
+
+  <link rel="canonical" href="https://chenhu1001.github.com/2016/10/25/iOS直播技术分享-延迟优化（五）/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>iOS直播技术分享-延迟优化（五） | Clang的技术博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Clang的技术博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">信号与信息处理，硕士。方向：音视频、图像处理。GitHub：https://github.com/chenhu1001</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-ios">
+    <a href="/categories/iOS" rel="section">iOS</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-av">
+    <a href="/categories/音视频" rel="section">音视频</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-java">
+    <a href="/categories/Java" rel="section">Java</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-other">
+    <a href="/categories/随笔" rel="section">随笔</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://chenhu1001.github.com/2016/10/25/iOS直播技术分享-延迟优化（五）/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Clang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://qnc.planlogo.cn/%E5%A4%B4%E5%83%8F.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Clang的技术博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS直播技术分享-延迟优化（五）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-10-25 14:07:10" itemprop="dateCreated datePublished" datetime="2016-10-25T14:07:10+08:00">2016-10-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-11-05 10:16:47" itemprop="dateModified" datetime="2018-11-05T10:16:47+08:00">2018-11-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/音视频/" itemprop="url" rel="index"><span itemprop="name">音视频</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/10/25/iOS直播技术分享-延迟优化（五）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/25/iOS直播技术分享-延迟优化（五）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>音视频的直播系统是一个复杂的工程系统，要做到非常低延迟的直播，需要复杂的系统工程优化和对各组件非常熟悉的掌握。这里分享几个简单而常用的调优技巧。<br><a id="more"></a></p>
+<h2 id="编码优化"><a href="#编码优化" class="headerlink" title="编码优化"></a>编码优化</h2><p>1、确保 Codec 开启了最低延迟的设置。Codec 一般都会有低延迟优化的开关，对于 H.264 来说其效果尤其明显。很多人可能不知道 H.264 的解码器正常情况下会在显示之前缓存一定的视频帧，对于 QCIF 分辨率大小的视频（176 × 144）一般会缓存 16 帧，对于 720P 的视频则缓存 5 帧。对于第一帧的读取来说，这是一个很大的延迟。如果你的视频不是使用 H.264 来编码压缩的，确保没有使用到 B 帧，它对延迟也会有较大的影响，因为视频中 B 帧的解码依赖于前后的视频帧，会增加延迟。<br>2、编码器一般都会有码控造成的延迟，一般也叫做初始化延迟或者视频缓存检验器 VBV 的缓存大小，把它当成编码器和解码器比特流之间的缓存，在不影响视频质量的情况下可以将其设置得尽可能小也可以降低延迟。<br>3、如果是仅仅优化首开延迟，可以在视频帧间插入较多的关键帧，这样客户端收到视频流之后可以尽快解码。但如果需要优化传输过程中的累计延迟，尽可能少使用关键帧也就是 I 帧（GOP 变大），在保证同等视频质量的情况下，I 帧越多，码率越大，传输所需的网络带宽越多，也就意味着累计延迟可能越大。这个优化效果可能在秒级延迟的系统中不是很明显，但是在 100 ms 甚至更低延迟的系统中就会非常明显。同时，尽量使用 ACC-LC Codec 来编码音频，HE-ACC 或者 HE-ACC 2 虽然编码效率高，但是编码所需时间更长，而产生更大体积的音频造成的传输延迟对于视频流的传输来说影响更小。<br>4、不要使用视频 MJPEG 的视频压缩格式，至少使用不带 B 帧的 MPEG4 视频压缩格式（Simple profile），甚至最好使用 H.264 baseline profile（X264 还有一个「-tune zerolatency」的优化开关）。这样一个简单的优化可以降低延迟，因为它能够以更低的码率编码全帧率视频。<br>5、如果使用了 FFmpeg，降低「-probesize 」和「 -analyze duration」参数的值，这两个值用于视频帧信息监测和用于监测的时长，这两个值越大对编码延迟的影响越大，在直播场景下对于视频流来说 analyzeduration 参数甚至没有必要设定。<br>6、固定码率编码 CBR 可以一定程度上消除网络抖动影响，如果能够使用可变码率编码 VBR 可以节省一些不必要的网络带宽，降低一定的延迟。因此建议尽量使用 VBR 进行编码。</p>
+<h2 id="传输协议优化"><a href="#传输协议优化" class="headerlink" title="传输协议优化"></a>传输协议优化</h2><p>1、在服务端节点和节点之间尽量使用 RTMP 而非基于 HTTP 的 HLS 协议进行传输，这样可以降低整体的传输延迟。这个主要针对终端用户使用 HLS 进行播放的情况。<br>2、如果终端用户使用 RTMP 来播放，尽量在靠近推流端的收流节点进行转码，这样传输的视频流比原始视频流更小。<br>3、如果有必要，可以使用定制的 UDP 协议来替换 TCP 协议，省去弱网环节下的丢包重传可以降低延迟。它的主要缺点在于，基于 UDP 协议进行定制的协议的视频流的传输和分发不够通用，CDN 厂商支持的是标准的传输协议。另一个缺点在于可能出现丢包导致的花屏或者模糊（缺少关键帧的解码参考），这就要求协议定制方在 UDP 基础之上做好丢包控制。 </p>
+<h2 id="传输网络优化"><a href="#传输网络优化" class="headerlink" title="传输网络优化"></a>传输网络优化</h2><p>1、我们曾经介绍过七牛直播云的实时流传输网络，它是一种新型的节点自组织的网状传输网络，既适合国内多运营商网络条件下的传输优化，也适合众多海外直播的需求。<br>2、在服务端节点中缓存当前 GOP，配合播放器端优化视频首开时间。<br>3、服务端实时记录每个视频流流向每个环节时的秒级帧率和码率，实时监控码率和帧率的波动。<br>4、客户端（推流和播放）通过查询服务端准实时获取当前最优节点（5 秒一次），准实时下线当前故障节点和线路。</p>
+<h2 id="推流、播放优化"><a href="#推流、播放优化" class="headerlink" title="推流、播放优化"></a>推流、播放优化</h2><p>1、考察发送端系统自带的网络 buffer 大小，系统可能在发送数据之前缓存数据，这个参数的调优也需要找到一个平衡点。<br>2、播放端缓存控制对于视频的首开延迟也有较大影响，如果仅优化首开延迟，可以在 0 缓存情况下在数据到达的时候立即解码。但如果在弱网环境下为了消除网络抖动造成的影响，设置一定的缓存也有必要，因此需要在直播的稳定性和首开延迟优化上找到平衡，调整优化缓冲区大小这个值。<br>3、播放端动态 buffer 策略，这是上面播放端缓存控制的改进版本。如果只是做 0 缓存和固定大小的缓存之间进行选择找到平衡，最终还是会选择一个固定大小的缓存，这对亿级的移动互联网终端用户来说并不公平，他们不同的网络状况决定了这个固定大小的缓存并不完全合适。因此，我们可以考虑一种「动态 buffer 策略」，在播放器开启的时候采用非常小甚至 0 缓存的策略，通过对下载首片视频的耗时来决定下一个时间片的缓存大小，同时在播放过程中实时监测当前网络，实时调整播放过程中缓存的大小。这样即可做到极低的首开时间，又可能够尽量消除网络抖动造成的影响。<br>4、动态码率播放策略。除了动态调整 buffer 大小的策略之外，也可以利用实时监测的网络信息来动态调整播放过程中的码率，在网络带宽不足的情况下降低码率进行播放，减少延迟。</p>
+<p>&emsp;&emsp;以上，是在低延迟优化方面的部分技巧。实际上我们优化低延迟的时候并不是只关注「低延迟」，而是在保证其它条件不影响用户体验的情况下尽量做到低延迟，因此它的内容涉及到更多广泛的话题。而视频直播的优化也包含方方面面，这里只分享了其中经过我们实践的部分。随着实践的积累，我们接下来会在线上和线下分享更多关于视频直播甚至点播的优化技巧。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/音视频/" rel="tag"># 音视频</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/25/iOS直播技术分享-推流和传输（四）/" rel="next" title="iOS直播技术分享-推流和传输（四）">
+                <i class="fa fa-chevron-left"></i> iOS直播技术分享-推流和传输（四）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/25/iOS直播技术分享-直播播放器（六）/" rel="prev" title="iOS直播技术分享-直播播放器（六）">
+                iOS直播技术分享-直播播放器（六） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://qnc.planlogo.cn/%E5%A4%B4%E5%83%8F.JPG" alt="Clang">
+            
+              <p class="site-author-name" itemprop="name">Clang</p>
+              <p class="site-description motion-element" itemprop="description">业精于勤，荒于嬉</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chenhu1001" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:chenhu656719@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#编码优化"><span class="nav-number">1.</span> <span class="nav-text">编码优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传输协议优化"><span class="nav-number">2.</span> <span class="nav-text">传输协议优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传输网络优化"><span class="nav-number">3.</span> <span class="nav-text">传输网络优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推流、播放优化"><span class="nav-number">4.</span> <span class="nav-text">推流、播放优化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Clang</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.2.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.2.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.2.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.2.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.2.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://clang-1.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://chenhu1001.github.com/2016/10/25/iOS直播技术分享-延迟优化（五）/';
+        this.page.identifier = '2016/10/25/iOS直播技术分享-延迟优化（五）/';
+        this.page.title = 'iOS直播技术分享-延迟优化（五）';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://clang-1.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
