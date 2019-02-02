@@ -16,7 +16,7 @@ tags: [音视频]
 * 直播播放器：负责拉流、解码、播放。
   
 用一张腾讯云的图来说明上面的流程：  
-![直播技术流程](http://upload-images.jianshu.io/upload_images/2014909-fc4efbc9b1ffdd45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![直播技术流程](http://chenhu1001.github.io/images/iOS直播技术分享-音视频采集（一）_1.png)
 ## 2、获取系统的授权
 直播的第一步就是采集数据，包含视频和音频数据，由于iOS权限的要求，需要先获取访问摄像头和麦克风的权限：
 

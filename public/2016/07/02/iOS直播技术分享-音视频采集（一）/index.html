@@ -46,7 +46,9 @@
 
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
 
 <link rel="stylesheet" href="/css/main.css?v=7.0.0">
 
@@ -104,12 +106,12 @@
 <meta property="og:site_name" content="Clang的技术博客">
 <meta property="og:description" content="1、iOS直播技术的流程&amp;emsp;&amp;emsp;直播技术的流程大致可以分为几个步骤：数据采集、图像处理（实时滤镜）、视频编码、封包、上传、云端（转码、录制、分发）、直播播放器。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2014909-fc4efbc9b1ffdd45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-02-02T01:23:27.379Z">
+<meta property="og:image" content="http://chenhu1001.github.io/images/iOS直播技术分享-音视频采集（一）_1.png">
+<meta property="og:updated_time" content="2019-02-02T05:29:05.054Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS直播技术分享-音视频采集（一）">
 <meta name="twitter:description" content="1、iOS直播技术的流程&amp;emsp;&amp;emsp;直播技术的流程大致可以分为几个步骤：数据采集、图像处理（实时滤镜）、视频编码、封包、上传、云端（转码、录制、分发）、直播播放器。">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2014909-fc4efbc9b1ffdd45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="http://chenhu1001.github.io/images/iOS直播技术分享-音视频采集（一）_1.png">
 
 
 
@@ -440,7 +442,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-02-02 09:23:27" itemprop="dateModified" datetime="2019-02-02T09:23:27+08:00">2019-02-02</time>
+                <time title="修改时间：2019-02-02 13:29:05" itemprop="dateModified" datetime="2019-02-02T13:29:05+08:00">2019-02-02</time>
               
             
           </span>
@@ -514,7 +516,7 @@
 <li>云端：进行流的转码、分发和录制；  </li>
 <li>直播播放器：负责拉流、解码、播放。</li>
 </ul>
-<p>用一张腾讯云的图来说明上面的流程：<br><img src="http://upload-images.jianshu.io/upload_images/2014909-fc4efbc9b1ffdd45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="直播技术流程"></p>
+<p>用一张腾讯云的图来说明上面的流程：<br><img src="http://chenhu1001.github.io/images/iOS直播技术分享-音视频采集（一）_1.png" alt="直播技术流程"></p>
 <h2 id="2、获取系统的授权"><a href="#2、获取系统的授权" class="headerlink" title="2、获取系统的授权"></a>2、获取系统的授权</h2><p>直播的第一步就是采集数据，包含视频和音频数据，由于iOS权限的要求，需要先获取访问摄像头和麦克风的权限：</p>
 <p>请求获取访问摄像头权限</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">__weak typeof(self) _self = self;</span><br><span class="line">    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];</span><br><span class="line">    switch (status) &#123;</span><br><span class="line">        case AVAuthorizationStatusNotDetermined:&#123;</span><br><span class="line">            // 许可对话没有出现，发起授权许可</span><br><span class="line">            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) &#123;</span><br><span class="line">                if (granted) &#123;</span><br><span class="line">                    dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                        [_self.session setRunning:YES];</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;];</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        case AVAuthorizationStatusAuthorized:&#123;</span><br><span class="line">            // 已经开启授权，可继续</span><br><span class="line">            [_self.session setRunning:YES];</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        case AVAuthorizationStatusDenied:</span><br><span class="line">        case AVAuthorizationStatusRestricted:</span><br><span class="line">            // 用户明确地拒绝授权，或者相机设备无法访问</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
@@ -663,7 +665,7 @@
                 
                 
                 <div class="site-state-item site-state-categories">
-                  
+                  <a href="/categories/index.html">
                     
                     
                       
@@ -676,7 +678,7 @@
                     
                     <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">分类</span>
-                  
+                  </a>
                 </div>
               
 
@@ -684,7 +686,7 @@
                 
                 
                 <div class="site-state-item site-state-tags">
-                  
+                  <a href="/tags/index.html">
                     
                     
                       
@@ -697,7 +699,7 @@
                     
                     <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">标签</span>
-                  
+                  </a>
                 </div>
               
             </nav>

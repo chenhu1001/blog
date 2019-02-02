@@ -83,3 +83,5 @@ make && sudo make install
 
 5、在根目录下的ffmpegbuild目录中，就是编译好的头文件和库文件，包括静态库和动态库。
 
+转载请注明原地址，Clang的博客：https://chenhu1001.github.io 谢谢！
+

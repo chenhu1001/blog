@@ -75,6 +75,6 @@ tags: [iOS]
 * 运行carthage update，将获取依赖文件到一个Carthage.checkout文件夹，然后编译每个依赖
 * 在项目中引入依赖的 Framkework，只需要在对应Target中的Build Setting中的Framework Search Path项加入以下路径，Xcode 便会自动搜索目录下的Framework（$(SRCROOT)/Carthage/Build/iOS）
 
-![更新carthage](http://upload-images.jianshu.io/upload_images/2014909-e5d64c47efab9c7d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![更新carthage](http://chenhu1001.github.io/images/iOS新的依赖管理工具：Carthage_1.png)
 
 转载请注明原地址，Clang的博客：https://chenhu1001.github.io 谢谢！
