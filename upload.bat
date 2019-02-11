@@ -1,6 +1,0 @@
-hexo clean
-hexo generate
-copy baidu_verify_QlXZgAkD3G.html public/baidu_verify_QlXZgAkD3G.html
-copy baidu_verify_kGgjmJoWEu.html public/baidu_verify_kGgjmJoWEu.html
-copy googlec2ea9934f0a4f099.html public/googlec2ea9934f0a4f099.html
-hexo deploy
