@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8ffe5a7-4a7d-4d1a-b20e-c658c104637a" name="Default Changelist" comment="移除主题">
+      <change afterPath="$PROJECT_DIR$/baidusitemap.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sitemap.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.json" beforeDir="false" afterPath="$PROJECT_DIR$/db.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload.sh" beforeDir="false" afterPath="$PROJECT_DIR$/upload.sh" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -27,11 +30,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/themes/next/_config.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="149" column="34" selection-start-line="149" selection-start-column="34" selection-end-line="149" selection-end-column="34" />
+            <state relative-caret-position="196">
+              <caret line="148" column="37" lean-forward="true" selection-start-line="148" selection-start-column="37" selection-end-line="148" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/upload.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="7" column="43" lean-forward="true" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -55,13 +67,14 @@
         <option value="$PROJECT_DIR$/_config.yml" />
         <option value="$PROJECT_DIR$/themes/next/_config.yml" />
         <option value="$PROJECT_DIR$/themes/next/languages/zh-CN.yml" />
+        <option value="$PROJECT_DIR$/upload.sh" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="216" />
+    <option name="x" value="679" />
     <option name="y" value="23" />
-    <option name="width" value="1412" />
+    <option name="width" value="1599" />
     <option name="height" value="877" />
   </component>
   <component name="ProjectView">
@@ -93,6 +106,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/themes/next/source/images" />
     </key>
   </component>
@@ -121,7 +135,7 @@
       <workItem from="1549070627143" duration="40000" />
       <workItem from="1549070728717" duration="67000" />
       <workItem from="1549071474717" duration="3128000" />
-      <workItem from="1549865708571" duration="307000" />
+      <workItem from="1549865708571" duration="622000" />
     </task>
     <task id="LOCAL-00001" summary="移除主题">
       <created>1549070777307</created>
@@ -134,12 +148,12 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3542000" />
+    <option name="totallyTimeSpent" value="3857000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="373" y="23" width="1411" height="877" extended-state="0" />
+    <frame x="29" y="23" width="1599" height="877" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24964029" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21989861" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -150,8 +164,8 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.39763778" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.20341207" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.5183727" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -160,6 +174,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="移除主题" />
@@ -208,8 +232,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/themes/next/_config.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="149" column="34" selection-start-line="149" selection-start-column="34" selection-end-line="149" selection-end-column="34" />
+        <state relative-caret-position="196">
+          <caret line="148" column="37" lean-forward="true" selection-start-line="148" selection-start-column="37" selection-end-line="148" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upload.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="43" lean-forward="true" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
         </state>
       </provider>
     </entry>
