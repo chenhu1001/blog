@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="业精于勤，荒于嬉">
+  <meta name="description" content="一般解决跨域问题可以通过CORS跨域、JSONP和反向代理跨域。下面分别介绍这三种跨域方式： 1、CORS2、JSONP3、反向代理">
 <meta name="keywords" content="Vue">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue实现跨域请求">
 <meta property="og:url" content="https://chenhu1001.github.com/2019/02/02/Vue实现跨域请求/index.html">
 <meta property="og:site_name" content="Clang的技术博客">
-<meta property="og:description" content="业精于勤，荒于嬉">
+<meta property="og:description" content="一般解决跨域问题可以通过CORS跨域、JSONP和反向代理跨域。下面分别介绍这三种跨域方式： 1、CORS2、JSONP3、反向代理">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-02-11T06:14:45.745Z">
+<meta property="og:updated_time" content="2019-07-23T06:26:31.740Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue实现跨域请求">
-<meta name="twitter:description" content="业精于勤，荒于嬉">
+<meta name="twitter:description" content="一般解决跨域问题可以通过CORS跨域、JSONP和反向代理跨域。下面分别介绍这三种跨域方式： 1、CORS2、JSONP3、反向代理">
 
 
 
@@ -191,7 +191,7 @@
     </div>
     
       
-        <p class="site-subtitle">信号与信息处理，硕士。方向：音视频、图像处理。GitHub：https://github.com/chenhu1001</p>
+        <p class="site-subtitle">信号与信息处理，硕士。GitHub：https://github.com/chenhu1001</p>
       
     
     
@@ -440,7 +440,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-02-11 14:14:45" itemprop="dateModified" datetime="2019-02-11T14:14:45+08:00">2019-02-11</time>
+                <time title="修改时间：2019-07-23 14:26:31" itemprop="dateModified" datetime="2019-07-23T14:26:31+08:00">2019-07-23</time>
               
             
           </span>
@@ -486,6 +486,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -504,7 +511,8 @@
       
 
       
-        
+        <p>一般解决跨域问题可以通过CORS跨域、JSONP和反向代理跨域。下面分别介绍这三种跨域方式：</p>
+<h2 id="1、CORS"><a href="#1、CORS" class="headerlink" title="1、CORS"></a>1、CORS</h2><h2 id="2、JSONP"><a href="#2、JSONP" class="headerlink" title="2、JSONP"></a>2、JSONP</h2><h2 id="3、反向代理"><a href="#3、反向代理" class="headerlink" title="3、反向代理"></a>3、反向代理</h2>
       
     </div>
 
@@ -519,6 +527,30 @@
     
       
     
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Clang 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
     
 
     
@@ -600,8 +632,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -716,6 +757,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、CORS"><span class="nav-number">1.</span> <span class="nav-text">1、CORS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、JSONP"><span class="nav-number">2.</span> <span class="nav-text">2、JSONP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、反向代理"><span class="nav-number">3.</span> <span class="nav-text">3、反向代理</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -755,9 +813,44 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 
+
+
+  <script>
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66174172";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
 
 
@@ -897,6 +990,21 @@
   
 
   
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
 
   
 
