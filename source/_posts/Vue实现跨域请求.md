@@ -7,6 +7,7 @@ tags: [Vue]
 一般解决跨域问题可以通过CORS跨域、JSONP和反向代理跨域。下面分别介绍这三种跨域方式：
 ## 1、CORS
 以netty为例，支持跨域请求需要配置的返回头信息。
+<!--more-->
 ```
 FullHttpResponse response = null;
 String responseStr = result.toString() + "xxxxx";
