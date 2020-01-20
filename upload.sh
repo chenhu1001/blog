@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+rm -rf .deploy_git/
+rm -rf pubilc/
 hexo clean
 hexo generate
 cp baidu_verify_pPAplH5qPr.html public/baidu_verify_pPAplH5qPr.html
