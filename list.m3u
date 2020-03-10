@@ -1,0 +1,39 @@
+#EXTM3U
+#EXTINF:-1 ,Phoenix TV Chinese Channel
+http://117.169.124.43:6610/ysten-businessmobile/live/fhchinese/index.m3u8
+#EXTINF:-1 ,Phoenix TV News Channel
+http://117.169.120.138:8080/live/fhzixun/.m3u8
+#EXTINF:-1 ,Hong Kong Satellite TV
+http://zhibo.hkstv.tv/livestream/mutfysrq/playlist.m3u8
+#EXTINF:-1 ,Sichuan TV
+http://120.204.20.147/tlivecloud-cdn.ysp.cctv.cn/001/2000295001.m3u8
+#EXTINF:-1 ,Hunan TV
+http://223.110.242.204:6610/gitv/live1/G_HUNAN-CQ/G_HUNAN-CQ/
+#EXTINF:-1 ,Jiangsu TV
+http://223.110.242.204:6610/gitv/live1/G_JIANGSU-CQ/G_JIANGSU-CQ/
+#EXTINF:-1 ,Beijinng TV
+http://223.110.242.204:6610/gitv/live1/G_BEIJING-CQ/G_BEIJING-CQ/
+#EXTINF:-1 ,Zhejiang TV
+http://223.110.242.204:6610/gitv/live1/G_ZHEJIANG-CQ/G_ZHEJIANG-CQ/
+#EXTINF:-1 ,Shanghai TV
+http://223.110.242.204:6610/gitv/live1/G_DONGFANG-CQ/G_DONGFANG-CQ/
+#EXTINF:-1 ,Shandong TV
+http://223.110.242.204:6610/gitv/live1/G_SHANDONG-HQ/G_SHANDONG-HQ/
+#EXTINF:-1 ,CCTV-1
+http://223.110.242.204:6610/gitv/live1/G_CCTV-1-CQ/G_CCTV-1-CQ/
+#EXTINF:-1 ,CCTV-2
+http://223.110.242.204:6610/gitv/live1/G_CCTV-2-CQ/G_CCTV-2-CQ/
+#EXTINF:-1 ,CCTV-3
+http://223.110.242.204:6610/gitv/live1/G_CCTV-3-CQ/G_CCTV-3-CQ/
+#EXTINF:-1 ,CCTV-4
+http://223.110.242.204:6610/gitv/live1/G_CCTV-4-CQ/G_CCTV-4-CQ/
+#EXTINF:-1 ,CCTV-5
+http://223.110.242.204:6610/gitv/live1/G_CCTV-5-CQ/G_CCTV-5-CQ/
+#EXTINF:-1 ,CCTV-5+
+http://223.110.242.204:6610/gitv/live1/G_CCTV-5PLUS-CQ/G_CCTV-5PLUS-CQ/
+#EXTINF:-1 ,CCTV-6
+http://223.110.242.204:6610/gitv/live1/G_CCTV-6-CQ/G_CCTV-6-CQ/
+#EXTINF:-1 ,CCTV-8
+http://223.110.242.204:6610/gitv/live1/G_CCTV-8-CQ/G_CCTV-8-CQ/
+#EXTINF:-1 ,CCTV-13
+http://223.110.242.204:6610/gitv/live1/G_CCTV-13-HQ/G_CCTV-13-HQ/
