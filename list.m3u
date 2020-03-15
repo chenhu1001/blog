@@ -6,7 +6,7 @@ http://117.169.120.138:8080/live/fhzixun/.m3u8
 #EXTINF:-1 ,Hong Kong Satellite TV
 http://zhibo.hkstv.tv/livestream/mutfysrq/playlist.m3u8
 #EXTINF:-1 ,Sichuan TV
-http://120.204.20.147/tlivecloud-cdn.ysp.cctv.cn/001/2000295001.m3u8
+http://live-wcloud-cdn.ysp.cctv.cn/tlivecloud-cdn.ysp.cctv.cn/001/2000295001.m3u8
 #EXTINF:-1 ,Hunan TV
 http://223.110.242.204:6610/gitv/live1/G_HUNAN-CQ/G_HUNAN-CQ/
 #EXTINF:-1 ,Jiangsu TV
