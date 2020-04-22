@@ -8,4 +8,5 @@ cp google8819a7729474aec5.html public/google8819a7729474aec5.html
 cp sitemap.xml public/sitemap.xml
 cp baidusitemap.xml public/baidusitemap.xml
 cp list.m3u public/list.m3u
+cp subscribe public/subscribe
 hexo deploy
