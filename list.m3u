@@ -1,12 +1,12 @@
 #EXTM3U
 #EXTINF:-1 ,Phoenix TV Chinese Channel
-http://117.169.124.43:6610/ysten-businessmobile/live/fhchinese/index.m3u8
+http://117.169.120.138:8080/live/fhchinese/index.m3u8
 #EXTINF:-1 ,Phoenix TV News Channel
 http://117.169.120.138:8080/live/fhzixun/.m3u8
 #EXTINF:-1 ,Hong Kong Satellite TV
 http://zhibo.hkstv.tv/livestream/mutfysrq/playlist.m3u8
 #EXTINF:-1 ,Sichuan TV
-http://live-wcloud-cdn.ysp.cctv.cn/tlivecloud-cdn.ysp.cctv.cn/001/2000295001.m3u8
+http://223.110.245.145/ott.js.chinamobile.com/PLTV/3/224/3221225814/index.m3u8
 #EXTINF:-1 ,Hunan TV
 http://223.110.242.204:6610/gitv/live1/G_HUNAN-CQ/G_HUNAN-CQ/
 #EXTINF:-1 ,Jiangsu TV
