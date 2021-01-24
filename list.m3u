@@ -37,3 +37,15 @@ http://223.110.242.204:6610/gitv/live1/G_CCTV-6-CQ/G_CCTV-6-CQ/
 http://223.110.242.204:6610/gitv/live1/G_CCTV-8-CQ/G_CCTV-8-CQ/
 #EXTINF:-1 ,CCTV-13
 http://223.110.242.204:6610/gitv/live1/G_CCTV-13-HQ/G_CCTV-13-HQ/
+#EXTINF:-1 ,Guangdong TV
+http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221225736/index.m3u8
+#EXTINF:-1 ,Shenzhen TV
+http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221225739/index.m3u8
+#EXTINF:-1 ,Tianjin TV
+http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221225740/index.m3u8
+#EXTINF:-1 ,Hubei TV
+http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221225627/index.m3u8
+#EXTINF:-1 ,Jiangxi TV
+http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221225615/index.m3u8
+#EXTINF:-1 ,Anhui TV
+http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221225727/index.m3u8
