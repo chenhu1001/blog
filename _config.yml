@@ -83,5 +83,5 @@ deploy:
   type: git
   repository:
       github: https://github.com/chenhu1001/chenhu1001.github.io.git
-      gitee: https://gitee.com/chenhu1001/chenhu1001.git
+#      gitee: https://gitee.com/chenhu1001/chenhu1001.git
   branch: master
